@@ -231,3 +231,20 @@ def game_over_screen(screen, final_score):
                     for btn in buttons:
                         if btn.is_clicked(mouse_pos):
                             return btn.action_key
+
+def draw_hud(screen, font, time_left, score, level, difficulty):
+    pygame.draw.rect(screen, (40, 44, 52), (0, 0, WINDOW_WIDTH, HUD_HEIGHT))
+    pygame.draw.line(screen, WHITE, (0, HUD_HEIGHT), (WINDOW_WIDTH, HUD_HEIGHT), 3)
+    
+    lbl_mode = font.render(f"{difficulty}", True, (100, 200, 255))
+    lbl_level = font.render(f"Lvl: {level + 1}", True, WHITE)
+    time_str = f"{time_left:.1f}s" if time_left < 10 else f"{int(time_left)}s"
+    lbl_time = font.render(f"Time: {time_str}", True, RED if time_left < 5 else GREEN)
+    lbl_score = font.render(f"Score: {score}", True, GOLD)
+
+    screen.blit(lbl_mode, (20, 25))
+    screen.blit(lbl_level, (200, 25))
+    screen.blit(lbl_time, (400, 25))
+    screen.blit(lbl_score, (600, 25))
+
+    
