@@ -190,3 +190,44 @@ def menu_screen(screen):
                             return btn.action_key
         pygame.display.flip()
 
+def game_over_screen(screen, final_score):
+    font_title = pygame.font.Font(None, 80)
+    font_sub = pygame.font.Font(None, 50)
+    font_btn = pygame.font.Font(None, 40)
+    
+    btn_retry = Button("Retry Level", 200, 350, 400, 60, 'RETRY')
+    btn_restart = Button("Restart Game", 200, 430, 400, 60, 'RESTART')
+    btn_menu = Button("Main Menu", 200, 510, 400, 60, 'MENU')
+    btn_quit = Button("Quit", 200, 590, 400, 60, 'QUIT', color=BUTTON_DANGER)
+    
+    buttons = [btn_retry, btn_restart, btn_menu, btn_quit]
+
+    while True:
+        overlay = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+        overlay.set_alpha(10) 
+        screen.blit(overlay, (0,0))
+        
+        pygame.draw.rect(screen, (30, 30, 40), (100, 100, 600, 600), border_radius=20)
+        pygame.draw.rect(screen, WHITE, (100, 100, 600, 600), 3, border_radius=20)
+        
+        txt_go = font_title.render("GAME OVER", True, RED)
+        txt_sc = font_sub.render(f"Final Score: {final_score}", True, WHITE)
+        
+        screen.blit(txt_go, (WINDOW_WIDTH//2 - txt_go.get_width()//2, 150))
+        screen.blit(txt_sc, (WINDOW_WIDTH//2 - txt_sc.get_width()//2, 230))
+        
+        mouse_pos = pygame.mouse.get_pos()
+        for btn in buttons:
+            btn.check_hover(mouse_pos)
+            btn.draw(screen, font_btn)
+            
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return 'QUIT'
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for btn in buttons:
+                        if btn.is_clicked(mouse_pos):
+                            return btn.action_key
