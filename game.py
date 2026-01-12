@@ -99,3 +99,29 @@ def generate_maze(rows, cols, difficulty):
                 if neighbors >= 2:
                     maze[ry][rx] = 0
     return maze
+
+def get_shortest_path_time(maze, start_pos, end_pos):
+    rows = len(maze)
+    cols = len(maze[0])
+    queue = deque([(start_pos, 0)]) 
+    visited = set()
+    visited.add(start_pos)
+    found = False
+    steps = 0
+    
+    while queue:
+        (cx, cy), s = queue.popleft()
+        if (cx, cy) == end_pos:
+            steps = s
+            found = True
+            break  
+        for dx, dy in DIRECTIONS:
+            nx, ny = cx + dx, cy + dy
+            if 0 <= nx < cols and 0 <= ny < rows and maze[ny][nx] == 0:
+                if (nx, ny) not in visited:
+                    visited.add((nx, ny))
+                    queue.append(((nx, ny), s + 1))
+    
+    if not found: return 10 
+    return steps / 3.5
+
