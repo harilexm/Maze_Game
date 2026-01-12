@@ -72,4 +72,30 @@ class Button:
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
- 
+def generate_maze(rows, cols, difficulty):
+    maze = [[1 for _ in range(cols)] for _ in range(rows)]
+    def carve(cx, cy):
+        maze[cy][cx] = 0
+        dirs = DIRECTIONS[:]
+        random.shuffle(dirs)
+        for dx, dy in dirs:
+            nx, ny = cx + dx * 2, cy + dy * 2
+            if 0 <= nx < cols and 0 <= ny < rows and maze[ny][nx] == 1:
+                maze[cy + dy][cx + dx] = 0
+                maze[ny][nx] = 0
+                carve(nx, ny)
+    carve(0, 0)
+    maze[rows-1][cols-1] = 0 
+    if difficulty in ['MEDIUM', 'HARD']:
+        loops_to_add = (rows * cols) // 10
+        for _ in range(loops_to_add):
+            rx = random.randint(1, cols - 2)
+            ry = random.randint(1, rows - 2)
+            if maze[ry][rx] == 1:
+                neighbors = 0
+                for dx, dy in DIRECTIONS:
+                    if maze[ry+dy][rx+dx] == 0:
+                        neighbors += 1
+                if neighbors >= 2:
+                    maze[ry][rx] = 0
+    return maze
