@@ -126,3 +126,22 @@ def get_shortest_path_time(maze, start_pos, end_pos):
     if not found: return 10 
     return steps / 3.5
 
+def find_start_node(maze, rows, cols, difficulty):
+    candidates = []
+    limit_y = max(2, int(rows * 0.4))
+    limit_x = max(2, int(cols * 0.4))
+    for y in range(0, limit_y):
+        for x in range(0, limit_x):
+            if maze[y][x] == 0:
+                ways = 0
+                for dx, dy in DIRECTIONS:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < cols and 0 <= ny < rows and maze[ny][nx] == 0:
+                        ways += 1
+                if difficulty == 'EASY' and ways >= 3:
+                    candidates.append((x, y))
+                elif difficulty != 'EASY' and ways >= 3:
+                    if ways == 4: candidates.insert(0, (x,y)) 
+                    else: candidates.append((x, y))
+    if candidates: return candidates[0]
+    return (0, 0)
