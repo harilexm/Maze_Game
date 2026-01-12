@@ -159,4 +159,32 @@ def spawn_seeds(maze, rows, cols, count, player_pos, end_pos):
                 seeds.append((rx, ry))
     return seeds
 
+def menu_screen(screen):
+    font_title = pygame.font.Font(None, 80)
+    font_btn = pygame.font.Font(None, 50)
     
+    btn_easy = Button("EASY", 250, 300, 300, 80, 'EASY')
+    btn_med = Button("MEDIUM", 250, 400, 300, 80, 'MEDIUM')
+    btn_hard = Button("HARD", 250, 500, 300, 80, 'HARD')
+    buttons = [btn_easy, btn_med, btn_hard]
+
+    while True:
+        screen.fill((20, 20, 30))
+        title = font_title.render("MAZE RUNNER", True, GREEN)
+        screen.blit(title, (WINDOW_WIDTH//2 - title.get_width()//2, 150))
+        
+        mouse_pos = pygame.mouse.get_pos()
+        for btn in buttons:
+            btn.check_hover(mouse_pos)
+            btn.draw(screen, font_btn)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for btn in buttons:
+                        if btn.is_clicked(mouse_pos):
+                            return btn.action_key
+        pygame.display.flip()
