@@ -24,6 +24,13 @@ DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 # Directions for maze carving (right, down, left, up)
 DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
+# Configuration
+DIFFICULTY_SETTINGS = {
+    'EASY':   {'rows': 15, 'cols': 15, 'seeds': 4,  'growth': 0, 'buffer': 3.0}, 
+    'MEDIUM': {'rows': 21, 'cols': 21, 'seeds': 8,  'growth': 1, 'buffer': 6.0}, 
+    'HARD':   {'rows': 31, 'cols': 31, 'seeds': 15, 'growth': 2, 'buffer': 12.0}
+}
+
 def generate_maze(rows, cols):
     # Create grid filled with walls (1 means wall, 0 means passage)
     maze = [[1 for _ in range(cols)] for _ in range(rows)]
