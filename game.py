@@ -3,10 +3,10 @@ import random
 import time
 
 # Constants
-WIDTH, HEIGHT = 800, 800
-ROWS, COLS = 25, 25
-CELL_SIZE = WIDTH // COLS
-TIME_LIMIT = 60  # seconds for the challenge
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 800
+HUD_HEIGHT = 80  
+MAZE_AREA_HEIGHT = WINDOW_HEIGHT - HUD_HEIGHT
 
 # Colors
 WHITE = (255, 255, 255)
