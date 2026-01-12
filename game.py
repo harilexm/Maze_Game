@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+import sys
 from collections import deque
 
 # Constants
@@ -188,3 +189,4 @@ def menu_screen(screen):
                         if btn.is_clicked(mouse_pos):
                             return btn.action_key
         pygame.display.flip()
+
