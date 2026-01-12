@@ -145,3 +145,18 @@ def find_start_node(maze, rows, cols, difficulty):
                     else: candidates.append((x, y))
     if candidates: return candidates[0]
     return (0, 0)
+
+
+def spawn_seeds(maze, rows, cols, count, player_pos, end_pos):
+    seeds = []
+    attempts = 0
+    while len(seeds) < count and attempts < 1000:
+        attempts += 1
+        rx = random.randint(0, cols - 1)
+        ry = random.randint(0, rows - 1)
+        if maze[ry][rx] == 0 and (rx, ry) != player_pos and (rx, ry) != end_pos:
+            if (rx, ry) not in seeds:
+                seeds.append((rx, ry))
+    return seeds
+
+    
