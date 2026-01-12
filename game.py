@@ -31,6 +31,19 @@ DIFFICULTY_SETTINGS = {
     'HARD':   {'rows': 31, 'cols': 31, 'seeds': 15, 'growth': 2, 'buffer': 12.0}
 }
 
+# PALETTES VISIBILITY 
+PALETTES = [
+    # Classic: Black Walls, White Path, Gold Seeds
+    {'bg': BLACK, 'wall': (20, 20, 20), 'path': WHITE, 'player': GREEN, 'seed': GOLD},
+    
+    # Neon/Purple: Dark Indigo Walls, Light Cyan Path, HOT PINK Seeds
+    {'bg': (20, 0, 30), 'wall': (75, 0, 130), 'path': (220, 255, 255), 'player': (255, 255, 0), 'seed': (255, 20, 147)},
+    
+    # Desert: Dark Brown Walls, Sand Path, Deep Red Seeds
+    {'bg': (50, 20, 0), 'wall': (80, 40, 0), 'path': (255, 230, 200), 'player': BLUE, 'seed': (200, 0, 0)},
+]
+
+
 def generate_maze(rows, cols):
     # Create grid filled with walls (1 means wall, 0 means passage)
     maze = [[1 for _ in range(cols)] for _ in range(rows)]
