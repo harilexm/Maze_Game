@@ -247,4 +247,150 @@ def draw_hud(screen, font, time_left, score, level, difficulty):
     screen.blit(lbl_time, (400, 25))
     screen.blit(lbl_score, (600, 25))
 
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    pygame.display.set_caption("Ultimate Maze Game")
+    clock = pygame.time.Clock()
+    font = pygame.font.Font(None, 40)
     
+    pygame.key.set_repeat(200, 100) 
+
+    app_running = True
+    
+    while app_running:
+        difficulty_key = menu_screen(screen)
+        settings = DIFFICULTY_SETTINGS[difficulty_key]
+
+        current_rows = settings['rows']
+        current_cols = settings['cols']
+        score = 0
+        level = 0
+        
+        game_active = True
+        
+        while game_active:
+            # SAVE STATE
+            saved_score = score
+            saved_rows = current_rows
+            saved_cols = current_cols
+            
+            maze = generate_maze(current_rows, current_cols, difficulty_key)
+            start_pos = find_start_node(maze, current_rows, current_cols, difficulty_key)
+            end_pos = (current_cols - 1, current_rows - 1)
+            px, py = start_pos
+            
+            base_time = get_shortest_path_time(maze, start_pos, end_pos)
+            max_buffer = settings['buffer']
+            reduction = level * 0.07
+            current_buffer = max(0, max_buffer - reduction)
+            current_time_limit = base_time + current_buffer
+            
+            seeds = spawn_seeds(maze, current_rows, current_cols, settings['seeds'], start_pos, end_pos)
+            
+            cell_w = WINDOW_WIDTH // current_cols
+            cell_h = MAZE_AREA_HEIGHT // current_rows
+            CELL_SIZE = min(cell_w, cell_h)
+            
+            draw_offset_x = (WINDOW_WIDTH - (current_cols * CELL_SIZE)) // 2
+            draw_offset_y = HUD_HEIGHT + (MAZE_AREA_HEIGHT - (current_rows * CELL_SIZE)) // 2
+            
+            palette = PALETTES[(level // 5) % len(PALETTES)]
+            start_ticks = pygame.time.get_ticks()
+            
+            level_result = None 
+            
+            while level_result is None:
+                elapsed = (pygame.time.get_ticks() - start_ticks) / 1000
+                time_left = current_time_limit - elapsed
+                
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        level_result = 'QUIT'
+                    elif event.type == pygame.KEYDOWN:
+                        dx, dy = 0, 0
+                        if event.key == pygame.K_UP: dy = -1
+                        elif event.key == pygame.K_DOWN: dy = 1
+                        elif event.key == pygame.K_LEFT: dx = -1
+                        elif event.key == pygame.K_RIGHT: dx = 1
+                        nx, ny = px + dx, py + dy
+                        if 0 <= nx < current_cols and 0 <= ny < current_rows and maze[ny][nx] == 0:
+                            px, py = nx, ny
+
+                if (px, py) in seeds:
+                    seeds.remove((px, py))
+                    score += 10 * (level + 1)
+                if (px, py) == end_pos:
+                    level_result = 'WIN'
+                    score += int(time_left * 10)
+                if time_left <= 0:
+                    level_result = 'LOSE'
+
+                screen.fill(palette['bg'])
+                draw_hud(screen, font, max(0, time_left), score, level, difficulty_key)
+                
+                actual_rows = len(maze)
+                actual_cols = len(maze[0])
+                for r in range(actual_rows):
+                    for c in range(actual_cols):
+                        rect = (draw_offset_x + c * CELL_SIZE, 
+                                draw_offset_y + r * CELL_SIZE, 
+                                CELL_SIZE + 1, CELL_SIZE + 1)
+                        color = palette['path'] if maze[r][c] == 0 else palette['wall']
+                        pygame.draw.rect(screen, color, rect)
+
+                for sx, sy in seeds:
+                    cx = draw_offset_x + sx * CELL_SIZE + CELL_SIZE // 2
+                    cy = draw_offset_y + sy * CELL_SIZE + CELL_SIZE // 2
+                    pygame.draw.circle(screen, palette['seed'], (cx, cy), CELL_SIZE // 4)
+
+                ex = draw_offset_x + end_pos[0] * CELL_SIZE
+                ey = draw_offset_y + end_pos[1] * CELL_SIZE
+                pygame.draw.rect(screen, RED, (ex, ey, CELL_SIZE, CELL_SIZE))
+                
+                plx = draw_offset_x + px * CELL_SIZE + 2
+                ply = draw_offset_y + py * CELL_SIZE + 2
+                pygame.draw.rect(screen, palette['player'], (plx, ply, CELL_SIZE - 4, CELL_SIZE - 4))
+
+                pygame.display.flip()
+                clock.tick(30)
+                
+            if level_result == 'QUIT':
+                game_active = False
+                app_running = False
+                
+            elif level_result == 'WIN':
+                level += 1
+                current_rows += settings['growth']
+                current_cols += settings['growth']
+                msg_font = pygame.font.Font(None, 60)
+                overlay = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+                overlay.set_alpha(150)
+                overlay.fill(BLACK)
+                screen.blit(overlay, (0,0))
+                text = msg_font.render("Level Complete!", True, GREEN)
+                screen.blit(text, (WINDOW_WIDTH//2 - text.get_width()//2, WINDOW_HEIGHT//2))
+                pygame.display.flip()
+                pygame.time.delay(1000)
+                
+            elif level_result == 'LOSE':
+                action = game_over_screen(screen, score)
+                if action == 'RETRY':
+                    score = saved_score
+                    current_rows = saved_rows
+                    current_cols = saved_cols
+                elif action == 'RESTART':
+                    current_rows = settings['rows']
+                    current_cols = settings['cols']
+                    score = 0
+                    level = 0
+                elif action == 'MENU':
+                    game_active = False
+                elif action == 'QUIT':
+                    game_active = False
+                    app_running = False
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
