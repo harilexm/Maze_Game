@@ -50,3 +50,26 @@ class Button:
         self.action_key = action_key
         self.default_color = color
         self.is_hovered = False
+
+    def draw(self, screen, font):
+        if self.is_hovered:
+            r = min(255, self.default_color[0] + 30)
+            g = min(255, self.default_color[1] + 30)
+            b = min(255, self.default_color[2] + 30)
+            color = (r, g, b)
+        else:
+            color = self.default_color
+            
+        pygame.draw.rect(screen, color, self.rect, border_radius=10)
+        pygame.draw.rect(screen, WHITE, self.rect, 2, border_radius=10)
+        text_surf = font.render(self.text, True, WHITE)
+        text_rect = text_surf.get_rect(center=self.rect.center)
+        screen.blit(text_surf, text_rect)
+
+    def check_hover(self, pos):
+        self.is_hovered = self.rect.collidepoint(pos)
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
+
+ 
