@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from collections import deque
 
 # Constants
 WINDOW_WIDTH = 800
