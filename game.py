@@ -11,9 +11,15 @@ MAZE_AREA_HEIGHT = WINDOW_HEIGHT - HUD_HEIGHT
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+GOLD = (255, 215, 0)
+BUTTON_COLOR = (70, 130, 180)
+BUTTON_HOVER = (100, 149, 237)
+BUTTON_DANGER = (200, 60, 60) 
+
+DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 # Directions for maze carving (right, down, left, up)
 DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
