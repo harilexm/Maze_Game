@@ -5,8 +5,8 @@ import sys
 from collections import deque
 
 # Constants
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 800
+WINDOW_WIDTH = 900
+WINDOW_HEIGHT = 700
 HUD_HEIGHT = 80  
 MAZE_AREA_HEIGHT = WINDOW_HEIGHT - HUD_HEIGHT
 
