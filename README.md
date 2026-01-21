@@ -8,11 +8,11 @@
   <tr>
     <td align="center">
       <h4>SELECT LEVELs TYPE</h4>
-      <img src="assets/SelectingLevel.png" width="100%" alt="Level Select"/>
+      <img src="assets/SelectingLevel.PNG" width="100%" alt="Level Select"/>
     </td>
     <td align="center">
       <h4>FIRST-LEVEL STARTs</h4>
-      <img src="assets/StartingLevel.png" width="100%" alt="Starting Level"/>
+      <img src="assets/StartingLevel.PNG" width="100%" alt="Starting Level"/>
     </td>
   </tr>
 </table>
