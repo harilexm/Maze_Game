@@ -1,8 +1,7 @@
-# __MAZE GAME__
-
-**INTRODCUTION**: This is fun yet challenging game made for understanding the logic behind game creation.
-
----
+<div align="center">
+    <h1> MAZE GAME </h1> 
+    <p> THIS IS AN OPEN-SOURCE PROJECT </p>
+</div>
 
 <table align="center">
   <tr>
@@ -17,3 +16,17 @@
   </tr>
 </table>
 
+---
+
+**INTRODCUTION**: This is fun yet challenging open-source game develop for understanding the logic behind game creation using pygame module.
+
+---
+
+Requirements:
+
+*   **Python 3.10** (or 3.11,3.12)
+*   **Pygame**
+
+To install the necessary library, run this command in your terminal:
+```bash
+pip install pygame
